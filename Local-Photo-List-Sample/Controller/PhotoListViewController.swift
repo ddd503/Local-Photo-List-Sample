@@ -72,7 +72,7 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
     
     // 画像データの取得
     private func getPhotos() {
-        get { (photoModel) in
+        get { photoModel in
             model = photoModel
             reload()
         }

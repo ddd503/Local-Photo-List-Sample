@@ -10,7 +10,6 @@
 		4573F8B321B381E600893494 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8B221B381E600893494 /* AppDelegate.swift */; };
 		4573F8BA21B381E800893494 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4573F8B921B381E800893494 /* Assets.xcassets */; };
 		4573F8BD21B381E800893494 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4573F8BB21B381E800893494 /* LaunchScreen.storyboard */; };
-		4573F8C821B3975A00893494 /* PHAsset+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8C721B3975A00893494 /* PHAsset+Image.swift */; };
 		4573F8CA21B3AFC100893494 /* PhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8C921B3AFC100893494 /* PhotoModel.swift */; };
 		4573F8CC21B3B0AE00893494 /* PhotoModelDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8CB21B3B0AE00893494 /* PhotoModelDataStore.swift */; };
 		4573F8D021B3BAB800893494 /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8CE21B3BAB800893494 /* PhotoListViewController.swift */; };
@@ -26,7 +25,6 @@
 		4573F8B921B381E800893494 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4573F8BC21B381E800893494 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4573F8BE21B381E800893494 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4573F8C721B3975A00893494 /* PHAsset+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+Image.swift"; sourceTree = "<group>"; };
 		4573F8C921B3AFC100893494 /* PhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModel.swift; sourceTree = "<group>"; };
 		4573F8CB21B3B0AE00893494 /* PhotoModelDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoModelDataStore.swift; sourceTree = "<group>"; };
 		4573F8CE21B3BAB800893494 /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
@@ -99,7 +97,6 @@
 		4573F8C621B3975100893494 /* Extention */ = {
 			isa = PBXGroup;
 			children = (
-				4573F8C721B3975A00893494 /* PHAsset+Image.swift */,
 				4573F8D621B3DFD600893494 /* PHCachingImageManager+Image.swift */,
 			);
 			path = Extention;
@@ -189,7 +186,6 @@
 				4573F8CC21B3B0AE00893494 /* PhotoModelDataStore.swift in Sources */,
 				4573F8B321B381E600893494 /* AppDelegate.swift in Sources */,
 				4573F8CA21B3AFC100893494 /* PhotoModel.swift in Sources */,
-				4573F8C821B3975A00893494 /* PHAsset+Image.swift in Sources */,
 				4573F8D421B3BCB600893494 /* PhotoListCell.swift in Sources */,
 				4573F8D021B3BAB800893494 /* PhotoListViewController.swift in Sources */,
 				4573F8D721B3DFD600893494 /* PHCachingImageManager+Image.swift in Sources */,

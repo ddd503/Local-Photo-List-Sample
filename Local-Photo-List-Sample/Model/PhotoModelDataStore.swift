@@ -20,11 +20,9 @@ extension PhotoModelDataStore {
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         let assets = PHAsset.fetchAssets(with: .image, options: options)
         if assets.count > 0 {
-            var photos = [PHAsset]()
-            for i in 0..<assets.count {
-                photos.append(assets[i])
-            }
-            completionHandler(PhotoModel(photos: photos))
+            completionHandler(PhotoModel(photos: (0..<assets.count).map({ index in
+                assets[index]
+            })))
         } else {
             completionHandler(PhotoModel(photos: []))
         }
