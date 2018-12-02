@@ -13,12 +13,19 @@ final class PhotoListCell: UICollectionViewCell {
     
     @IBOutlet weak private var imageView: UIImageView!
     
+    var representedAssetIdentifier: String!
+    
     static var identifier: String {
         return String(describing: self)
     }
     
     static func nib() -> UINib {
         return UINib(nibName: identifier, bundle: nil)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
     }
     
     /// 画像データの表示
@@ -29,9 +36,12 @@ final class PhotoListCell: UICollectionViewCell {
     ///   - size: 画像サイズ
     func setImage(manager: PHCachingImageManager, asset: PHAsset?, size: CGSize) {
         if let asset = asset {
-            manager.getImage(asset: asset, quality: .high, size: size, mode: .aspectFill) { (image) in
-                DispatchQueue.main.async {
-                    self.imageView.image = image
+            representedAssetIdentifier = asset.localIdentifier
+            manager.getImage(asset: asset, quality: .high, size: size, mode: .aspectFill) { [weak self] image in
+                if self?.representedAssetIdentifier == asset.localIdentifier {
+                    DispatchQueue.main.async {
+                        self?.imageView.image = image
+                    }
                 }
             }
         }

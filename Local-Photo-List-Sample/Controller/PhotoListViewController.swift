@@ -44,7 +44,11 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
     private var model: PhotoModel?
     private let imageManager = PHCachingImageManager()
     private var thumbnailSize: CGSize!
-    
+    // 画像キャッシュ関連の動作
+    enum CachingImageAction {
+        case start
+        case stop
+    }
     // 初期設定
     private func setup() {
         adjustNaviBar()
@@ -85,6 +89,23 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
         }
     }
     
+    /// 表示画像のキャッシュアクションのハンドリング
+    ///
+    /// - Parameters:
+    ///   - actionType: 行うアクション
+    ///   - indexPaths: キャッシュ対象画像のindexPath
+    private func cache(_ actionType: CachingImageAction, indexPaths: [IndexPath]) {
+        guard let model = self.model else { return }
+        let prefetchPhotos = indexPaths.map { model.photos[$0.row] }
+        guard !prefetchPhotos.isEmpty else { return }
+        switch actionType {
+        case .start:
+            self.imageManager.startCachingImages(for: prefetchPhotos, targetSize: self.thumbnailSize, contentMode: .aspectFill, options: nil)
+        case .stop:
+            self.imageManager.stopCachingImages(for: prefetchPhotos, targetSize: self.thumbnailSize, contentMode: .aspectFill, options: nil)
+        }
+    }
+    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -118,23 +139,21 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     
 }
 
-extension PhotoListViewController: UICollectionViewDelegate {}
+extension PhotoListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cache(.stop, indexPaths: [indexPath])
+    }
+}
 
 // MARK: - UICollectionViewDataSourcePrefetching
 extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        guard let model = model else { return }
-        let prefetchPhotos = indexPaths.map { model.photos[$0.row] }
-        guard !prefetchPhotos.isEmpty else { return }
-        imageManager.startCachingImages(for: prefetchPhotos, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+        cache(.start, indexPaths: indexPaths)
     }
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        guard let model = model else { return }
-        let prefetchPhotos = indexPaths.map { model.photos[$0.row] }
-        guard !prefetchPhotos.isEmpty else { return }
-        imageManager.stopCachingImages(for: prefetchPhotos, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+        cache(.stop, indexPaths: indexPaths)
     }
     
 }
