@@ -16,7 +16,6 @@
 		4573F8D121B3BAB800893494 /* PhotoListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4573F8CF21B3BAB800893494 /* PhotoListViewController.xib */; };
 		4573F8D421B3BCB600893494 /* PhotoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8D221B3BCB600893494 /* PhotoListCell.swift */; };
 		4573F8D521B3BCB600893494 /* PhotoListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4573F8D321B3BCB600893494 /* PhotoListCell.xib */; };
-		4573F8D721B3DFD600893494 /* PHCachingImageManager+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4573F8D621B3DFD600893494 /* PHCachingImageManager+Image.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +30,6 @@
 		4573F8CF21B3BAB800893494 /* PhotoListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoListViewController.xib; sourceTree = "<group>"; };
 		4573F8D221B3BCB600893494 /* PhotoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCell.swift; sourceTree = "<group>"; };
 		4573F8D321B3BCB600893494 /* PhotoListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotoListCell.xib; sourceTree = "<group>"; };
-		4573F8D621B3DFD600893494 /* PHCachingImageManager+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHCachingImageManager+Image.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				4573F8CD21B3BA9700893494 /* Controller */,
-				4573F8C621B3975100893494 /* Extention */,
 				4573F8C521B381FE00893494 /* View */,
 				4573F8C421B381F800893494 /* Model */,
 				4573F8B221B381E600893494 /* AppDelegate.swift */,
@@ -92,14 +89,6 @@
 				4573F8D321B3BCB600893494 /* PhotoListCell.xib */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		4573F8C621B3975100893494 /* Extention */ = {
-			isa = PBXGroup;
-			children = (
-				4573F8D621B3DFD600893494 /* PHCachingImageManager+Image.swift */,
-			);
-			path = Extention;
 			sourceTree = "<group>";
 		};
 		4573F8CD21B3BA9700893494 /* Controller */ = {
@@ -188,7 +177,6 @@
 				4573F8CA21B3AFC100893494 /* PhotoModel.swift in Sources */,
 				4573F8D421B3BCB600893494 /* PhotoListCell.swift in Sources */,
 				4573F8D021B3BAB800893494 /* PhotoListViewController.swift in Sources */,
-				4573F8D721B3DFD600893494 /* PHCachingImageManager+Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

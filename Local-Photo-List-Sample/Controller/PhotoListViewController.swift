@@ -36,7 +36,6 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
         didSet {
             photoListView.dataSource = self
             photoListView.delegate = self
-            photoListView.prefetchDataSource = self
             photoListView.register(PhotoListCell.nib(), forCellWithReuseIdentifier: PhotoListCell.identifier)
         }
     }
@@ -44,14 +43,39 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
     private var model: PhotoModel?
     private let imageManager = PHCachingImageManager()
     private var thumbnailSize: CGSize!
+    private let cacheImageThread = DispatchQueue(label: "cacheImage")
     // 画像キャッシュ関連の動作
     enum CachingImageAction {
         case start
         case stop
     }
+    // 取得画像の画質管理
+    enum ImageQuality {
+        case high
+        case low
+        
+        var options: PHImageRequestOptions {
+            switch self {
+            case .high:
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .highQualityFormat
+                options.resizeMode = .exact
+                options.version = .original
+                return options
+            case .low:
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .fastFormat
+                options.resizeMode = .fast
+                options.version = .current
+                return options
+            }
+        }
+    }
+    
     // 初期設定
     private func setup() {
         adjustNaviBar()
+        adjustThumbnailSize()
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
             getPhotos()
@@ -74,10 +98,23 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
         navigationItem.title = "写真一覧"
     }
     
+    // サムネイルのサイズ準備
+    private func adjustThumbnailSize() {
+        let size = UIScreen.main.bounds.width / 3 - 1
+        let scale = UIScreen.main.scale
+        thumbnailSize = CGSize(width: size * scale, height: size * scale)
+    }
+    
     // 画像データの取得
     private func getPhotos() {
         get { photoModel in
             model = photoModel
+            cacheImageThread.async {
+                self.imageManager.startCachingImages(for: photoModel.photos,
+                                                     targetSize: self.thumbnailSize,
+                                                     contentMode: .aspectFill,
+                                                     options: ImageQuality.high.options)
+            }
             reload()
         }
     }
@@ -119,7 +156,7 @@ extension PhotoListViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoListCell.identifier, for: indexPath) as? PhotoListCell else {
             fatalError("cell is nil")
         }
-        cell.setImage(manager: imageManager, asset: model?.photos[indexPath.row], size: thumbnailSize)
+        cell.setImage(manager: imageManager, asset: model?.photos[indexPath.row], size: thumbnailSize, options: ImageQuality.high.options)
         return cell
     }
     
@@ -130,30 +167,10 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // セルの縦通しのスペースはIB側で
-        let cellSpacing: CGFloat = 1
-        let size = view.frame.width / 3 - cellSpacing
-        let scale = UIScreen.main.scale
-        thumbnailSize = CGSize(width: size * scale, height: size * scale)
-        return CGSize(width: size, height: size)
+        let length = UIScreen.main.bounds.width / 3 - 1
+        return CGSize(width: length, height: length)
     }
     
 }
 
-extension PhotoListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        cache(.stop, indexPaths: [indexPath])
-    }
-}
 
-// MARK: - UICollectionViewDataSourcePrefetching
-extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
-    
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        cache(.start, indexPaths: indexPaths)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        cache(.stop, indexPaths: indexPaths)
-    }
-    
-}

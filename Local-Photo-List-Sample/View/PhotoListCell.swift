@@ -34,13 +34,14 @@ final class PhotoListCell: UICollectionViewCell {
     ///   - manager: キャッシュを持ったPHCachingImageManager
     ///   - asset: 表示する画像データ
     ///   - size: 画像サイズ
-    func setImage(manager: PHCachingImageManager, asset: PHAsset?, size: CGSize) {
+    ///   - options: 適用するリクエストオプション
+    func setImage(manager: PHCachingImageManager, asset: PHAsset?, size: CGSize, options: PHImageRequestOptions) {
         if let asset = asset {
             representedAssetIdentifier = asset.localIdentifier
-            manager.getImage(asset: asset, quality: .high, size: size, mode: .aspectFill) { [weak self] image in
-                if self?.representedAssetIdentifier == asset.localIdentifier {
+            manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) { (image, dict) in
+                if let image = image, self.representedAssetIdentifier == asset.localIdentifier {
                     DispatchQueue.main.async {
-                        self?.imageView.image = image
+                        self.imageView.image = image
                     }
                 }
             }
