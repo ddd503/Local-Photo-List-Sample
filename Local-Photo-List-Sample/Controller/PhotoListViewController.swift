@@ -44,11 +44,7 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
     private let imageManager = PHCachingImageManager()
     private var thumbnailSize: CGSize!
     private let cacheImageThread = DispatchQueue(label: "cacheImage")
-    // 画像キャッシュ関連の動作
-    enum CachingImageAction {
-        case start
-        case stop
-    }
+    
     // 取得画像の画質管理
     enum ImageQuality {
         case high
@@ -123,23 +119,6 @@ final class PhotoListViewController: UIViewController, PhotoModelDataStore {
     private func reload() {
         DispatchQueue.main.async {
             self.photoListView.reloadData()
-        }
-    }
-    
-    /// 表示画像のキャッシュアクションのハンドリング
-    ///
-    /// - Parameters:
-    ///   - actionType: 行うアクション
-    ///   - indexPaths: キャッシュ対象画像のindexPath
-    private func cache(_ actionType: CachingImageAction, indexPaths: [IndexPath]) {
-        guard let model = self.model else { return }
-        let prefetchPhotos = indexPaths.map { model.photos[$0.row] }
-        guard !prefetchPhotos.isEmpty else { return }
-        switch actionType {
-        case .start:
-            self.imageManager.startCachingImages(for: prefetchPhotos, targetSize: self.thumbnailSize, contentMode: .aspectFill, options: nil)
-        case .stop:
-            self.imageManager.stopCachingImages(for: prefetchPhotos, targetSize: self.thumbnailSize, contentMode: .aspectFill, options: nil)
         }
     }
     
